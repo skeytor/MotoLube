@@ -1,9 +1,9 @@
 ﻿namespace MotoLube.Domain.Entities;
 
-public class SaleItem
+public class InboundItem
 {
-    internal SaleItem() { }
-    public Guid SaleId { get; set; }
+    internal InboundItem() { }
+    public Guid InboundId { get; set; }
     public Guid ProductId { get; set; }
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }

@@ -12,6 +12,6 @@ public sealed class Product
     public decimal Price { get; set; }
     public decimal Tax { get; set; }
     public bool IsActive { get; set; }
-    public DateTimeOffset CreatedAt { get; init; }
+    public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; set; }
 }
