@@ -2,6 +2,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/Core/">
     <Project Path="src/Core/MotoLube.Domain/MotoLube.Domain.csproj" />
+    <Project Path="src/Core/MotoLube.Persistence/MotoLube.Persistence.csproj" Id="8e7ceb5b-33ef-4951-a359-345e5007bcb9" />
   </Folder>
   <Folder Name="/tests/" />
 </Solution>
