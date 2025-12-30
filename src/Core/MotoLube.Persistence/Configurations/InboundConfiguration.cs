@@ -9,7 +9,7 @@ internal sealed class InboundConfiguration : IEntityTypeConfiguration<Inbound>
 {
     public void Configure(EntityTypeBuilder<Inbound> builder)
     {
-        builder.ToTable(TableNames.Inbound);
+        builder.ToTable(TableNames.Inbounds);
 
         builder.HasKey(i => i.Id);
         

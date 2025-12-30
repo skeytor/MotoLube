@@ -7,8 +7,8 @@ internal static class TableNames
     internal const string Brands = "Brands";
     internal const string Suppliers = "Suppliers";
     internal const string Customers = "Customers";
-    internal const string Inbound = "Inbound";
+    internal const string Inbounds = "Inbounds";
     internal const string InboundItems = "InboundItems";
-    internal const string Outbound = "Outbound";
+    internal const string Outbounds = "Outbounds";
     internal const string OutboundItems = "OutboundItems";
 }
