@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MotoLube.Persistence.Test.DataInitializers;
 using Testcontainers.PostgreSql;
 
 namespace MotoLube.Persistence.Test.Fixtures;
@@ -26,6 +27,7 @@ public sealed class DatabaseFixture : IAsyncLifetime
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseNpgsql($"{ConnectionString};Include Error Detail=true")
+            .UseAsyncSeeding((context, _, _) => DataInitializer.SeedDatabaseAsync(context))
             .Options;
         return new AppDbContext(options);
     }
