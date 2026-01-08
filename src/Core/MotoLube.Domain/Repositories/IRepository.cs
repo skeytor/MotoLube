@@ -8,7 +8,7 @@ public interface IRepository<in TId, TEntity>
     where TEntity : class
 {
     Task<TEntity> InsertAsync(TEntity entity);
-    ValueTask<TEntity?> FindByIdAsync(params TId[] ids);
+    ValueTask<TEntity?> FindByIdAsync(TId id);
     Task<IReadOnlyList<TEntity>> GetPagedAsync(PaginationFilter filter);
     Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
         PaginationFilter filter,

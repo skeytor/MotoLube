@@ -17,7 +17,7 @@ internal abstract class Repository<TId, TEntity>(AppDbContext context) : IReposi
 
     public virtual Task<bool> ExistsByIdAsync(TId id) => _dbSet.AnyAsync(e => EF.Property<TId>(e, "Id").Equals(id));
 
-    public virtual ValueTask<TEntity?> FindByIdAsync(params TId[] ids) => _dbSet.FindAsync(ids);
+    public virtual ValueTask<TEntity?> FindByIdAsync(TId id) => _dbSet.FindAsync(id);
 
     public virtual async Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
         PaginationFilter filter,
