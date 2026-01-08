@@ -8,26 +8,27 @@ namespace MotoLube.Persistence.Test;
 [Collection(nameof(DatabaseCollection))]
 public abstract class TestBase(DatabaseFixture fixture, ITestOutputHelper outputHelper)
 {
-    protected readonly ITestOutputHelper _outputHelper = outputHelper;
-    protected readonly AppDbContext _context = fixture.Context;
+    protected ITestOutputHelper OutputHelper { get; } = outputHelper;
+    protected AppDbContext Context { get; } = fixture.Context;
 
     protected void ExecuteInATransaction(Action action)
     {
-        IExecutionStrategy strategy = _context.Database.CreateExecutionStrategy();
+        IExecutionStrategy strategy = Context.Database.CreateExecutionStrategy();
         strategy.Execute(state: action, (operation) =>
         {
-            using IDbContextTransaction transaction = _context.Database.BeginTransaction();
+            using IDbContextTransaction transaction = Context.Database.BeginTransaction();
             operation();
             transaction.Rollback();
 
         });
     }
+
     protected Task ExecuteInATransactionAsync(Func<Task> action)
     {
-        IExecutionStrategy strategy = _context.Database.CreateExecutionStrategy();
+        IExecutionStrategy strategy = Context.Database.CreateExecutionStrategy();
         return strategy.ExecuteAsync(state: action, async (operation) =>
         {
-            await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
+            await using IDbContextTransaction transaction = await Context.Database.BeginTransactionAsync();
             await operation();
             await transaction.RollbackAsync();
         });
