@@ -229,7 +229,7 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     [Fact]
     public Task InsertAsync_Should_Return_InsertedProduct_When_ValidProductProvided()
     {
-        return ExecuteInATransactionAsync(async () =>
+        return ExecuteInTransactionAsync(async () =>
         {
             // Arrange
             Product newProduct = new()
@@ -266,7 +266,7 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     [Fact]
     public Task Update_Should_ModifyProduct_When_ValidChangesProvided()
     {
-        return ExecuteInATransactionAsync(async () =>
+        return ExecuteInTransactionAsync(async () =>
         {
             // Arrange
             Product? existingProduct = await _repository.FindByIdAsync(SampleData.Products[0].Id);
