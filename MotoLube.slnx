@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/" />
-  <Folder Name="/src/" />
+  <Folder Name="/src/">
+    <Project Path="src/SharedKernel/SharedKernel.csproj" Id="5e6a85f4-a8ea-41c2-a030-d28e7e434a7a" />
+  </Folder>
   <Folder Name="/src/Core/">
     <Project Path="src/Core/MotoLube.Domain/MotoLube.Domain.csproj" />
     <Project Path="src/Core/MotoLube.Persistence/MotoLube.Persistence.csproj" Id="8e7ceb5b-33ef-4951-a359-345e5007bcb9" />
