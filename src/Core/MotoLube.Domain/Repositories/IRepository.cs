@@ -9,9 +9,12 @@ public interface IRepository<in TId, TEntity>
 {
     Task<TEntity> InsertAsync(TEntity entity);
     ValueTask<TEntity?> FindByIdAsync(TId id);
-    Task<IReadOnlyList<TEntity>> GetPagedAsync(PaginationFilter filter);
     Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
-        PaginationFilter filter,
+        PaginationOptions pagingOptions,
+        PaginationQueryFilters filters,
+        Expression<Func<TEntity, TResult>> selector);
+    Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
+        PaginationOptions pagingOptions,
         Expression<Func<TEntity, TResult>> selector);
     Task<bool> ExistsByIdAsync(TId id);
     Task<int> CountAsync();
