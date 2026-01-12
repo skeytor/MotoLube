@@ -1,9 +1,6 @@
 ﻿namespace SharedKernel.Pagination;
 
-public sealed record PaginationFilter(
-    string? SearchTerm,
-    string? SortColumn,
-    SortOrder Order = PaginationDefaults.DefaultSortOrder,
+public sealed record PaginationOptions(
     int Page = PaginationDefaults.DefaultPageNumber,
     int Size = PaginationDefaults.DefaultPageSize)
 {

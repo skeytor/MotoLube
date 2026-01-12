@@ -161,14 +161,15 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     public async Task GetPagedAsync_Should_Return_PagedProducts()
     {
         // Arrange
-        PaginationFilter filter = new(null, null, Page: 1, Size: 3);
+        PaginationOptions options = new(Page: 1, Size: 3);
+        int expectedCount = 3;
 
         // Act
-        var result = await _repository.GetPagedAsync(filter);
+        var result = await _repository.GetPagedAsync(options, p => p);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(3, result.Count);
+        Assert.Equal(expectedCount, result.Count);
     }
 
     [Fact]
@@ -179,10 +180,10 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
         int pageSize = 3;
         int lastPage = (int)Math.Ceiling(totalProducts / (double)pageSize);
         int expectedCount = totalProducts - (pageSize * (lastPage - 1));
-        PaginationFilter filter = new(null, null, Page: lastPage, Size: pageSize);
+        PaginationOptions options = new(lastPage, pageSize);
 
         // Act
-        var result = await _repository.GetPagedAsync(filter);
+        var result = await _repository.GetPagedAsync(options, p => p);
 
         // Assert
         Assert.NotNull(result);
@@ -193,10 +194,10 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     public async Task GetPagedAsync_Should_Return_EmptyList_When_PageExceedsTotalPages()
     {
         // Arrange
-        PaginationFilter filter = new(null, null, Page: 100, Size: 10);
+        PaginationOptions options = new(Page: 100, Size: 10);
 
         // Act
-        var result = await _repository.GetPagedAsync(filter);
+        var result = await _repository.GetPagedAsync(options, p => p);
 
         // Assert
         Assert.NotNull(result);
@@ -207,7 +208,7 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     public async Task GetPagedAsync_WithSelector_Should_Return_ProjectedResults()
     {
         // Arrange
-        PaginationFilter filter = new(null, null, Page: 1, Size: 3);
+        PaginationOptions filter = new(Page: 1, Size: 3);
 
         // Act
         var result = await _repository.GetPagedAsync(filter, p => new { p.Id, p.Name });

@@ -10,7 +10,6 @@ internal abstract class Repository<TId, TEntity>(AppDbContext context) : IReposi
     where TId : notnull, IEquatable<TId>
 {
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
-
     protected AppDbContext Context { get; } = context;
 
     public virtual Task<int> CountAsync() => _dbSet.CountAsync();
@@ -20,21 +19,25 @@ internal abstract class Repository<TId, TEntity>(AppDbContext context) : IReposi
     public virtual ValueTask<TEntity?> FindByIdAsync(TId id) => _dbSet.FindAsync(id);
 
     public virtual async Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
-        PaginationFilter filter,
-        Expression<Func<TEntity, TResult>> selector) =>
-        await _dbSet
-            .AsNoTracking()
-            .Select(selector)
-            .Skip((filter.Page - 1) * filter.Size)
-            .Take(filter.Size)
-            .ToListAsync();
+        PaginationOptions pagingOptions,
+        PaginationQueryFilters filters,
+        Expression<Func<TEntity, TResult>> selector) => 
+            await _dbSet
+                .AsNoTracking()
+                .Select(selector)
+                .Skip((pagingOptions.Page - 1) * pagingOptions.Size)
+                .Take(pagingOptions.Size)
+                .ToListAsync();
 
-    public virtual async Task<IReadOnlyList<TEntity>> GetPagedAsync(PaginationFilter filter) =>
-        await _dbSet
-            .AsNoTracking()
-            .Skip((filter.Page - 1) * filter.Size)
-            .Take(filter.Size)
-            .ToListAsync();
+    public virtual async Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
+        PaginationOptions pagingOptions,
+        Expression<Func<TEntity, TResult>> selector) =>
+            await _dbSet
+                .AsNoTracking()
+                .Select(selector)
+                .Skip((pagingOptions.Page - 1) * pagingOptions.Size)
+                .Take(pagingOptions.Size)
+                .ToListAsync();
 
     public virtual async Task<TEntity> InsertAsync(TEntity entity)
     {
