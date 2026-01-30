@@ -6,28 +6,28 @@ internal static class SampleData
 {
     internal static readonly Category[] Categories =
     [
-        new Category { Id = 1, Name = "Engine Oils" },
-        new Category { Id = 2, Name = "Brake Fluids" },
-        new Category { Id = 3, Name = "Coolants" },
+        new() { Id = 1, Name = "Engine Oils" },
+        new() { Id = 2, Name = "Brake Fluids" },
+        new() { Id = 3, Name = "Coolants" },
     ];
 
     internal static readonly Brand[] Brands =
     [
-        new Brand { Id = 1, Name = "MotoLube" },
-        new Brand { Id = 2, Name = "SpeedyOil" },
-        new Brand { Id = 3, Name = "BrakeMaster" },
+        new() { Id = 1, Name = "MotoLube" },
+        new() { Id = 2, Name = "SpeedyOil" },
+        new() { Id = 3, Name = "BrakeMaster" },
     ];
     
     internal static readonly Supplier[] Suppliers =
     [
-        new Supplier { Name = "Global Oils Co." },
-        new Supplier { Name = "Brake Supplies Ltd." },
-        new Supplier { Name = "Coolant Experts Inc." },
+        new() { Name = "Global Oils Co." },
+        new() { Name = "Brake Supplies Ltd." },
+        new() { Name = "Coolant Experts Inc." },
     ];
 
     internal static readonly Product[] Products =
     [
-        new Product 
+        new()
         { 
             Name = "MotoLube Synthetic 5W-30", 
             Price = 29.99m,
@@ -38,7 +38,7 @@ internal static class SampleData
             CategoryId = 1, 
             BrandId = 1,
         },
-        new Product 
+        new()
         { 
             Name = "SpeedyOil Mineral 10W-40",
             Price = 19.99m,
@@ -49,7 +49,7 @@ internal static class SampleData
             CategoryId = 1, 
             BrandId = 2, 
         },
-        new Product 
+        new()
         { 
             Name = "BrakeMaster DOT 4", 
             Price = 14.99m,
@@ -60,7 +60,7 @@ internal static class SampleData
             CategoryId = 2, 
             BrandId = 3,
         },
-        new Product 
+        new()
         { 
             Name = "Coolant Experts Long-Life Coolant", 
             Price = 24.99m,
@@ -71,7 +71,7 @@ internal static class SampleData
             CategoryId = 3, 
             BrandId = 1,
         },
-        new Product 
+        new()
         { 
             Name = "MotoLube High Mileage 15W-50", 
             Price = 34.99m,
@@ -82,7 +82,7 @@ internal static class SampleData
             CategoryId = 1, 
             BrandId = 1,
         },
-        new Product 
+        new()
         { 
             Name = "SpeedyOil Synthetic Blend 10W-30", 
             Price = 22.99m,
@@ -93,7 +93,7 @@ internal static class SampleData
             CategoryId = 1, 
             BrandId = 2,
         },
-        new Product 
+        new()
         { 
             Name = "BrakeMaster DOT 5.1", 
             Price = 16.99m,
