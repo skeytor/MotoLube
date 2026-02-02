@@ -1,8 +1,7 @@
 ﻿namespace MotoLube.Domain.Entities;
 
-public sealed class Customer
+public sealed class Customer : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string? PhoneNumber { get; set; }

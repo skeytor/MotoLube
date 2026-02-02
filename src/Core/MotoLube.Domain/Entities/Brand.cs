@@ -1,8 +1,7 @@
 ﻿namespace MotoLube.Domain.Entities;
 
-public class Brand
+public class Brand : BaseEntity<int>
 {
-    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public ICollection<Product> Products { get; set; } = [];
 }

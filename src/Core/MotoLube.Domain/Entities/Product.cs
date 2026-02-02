@@ -1,8 +1,7 @@
 ﻿namespace MotoLube.Domain.Entities;
 
-public sealed class Product
+public sealed class Product : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
     public int BrandId { get; set; }
