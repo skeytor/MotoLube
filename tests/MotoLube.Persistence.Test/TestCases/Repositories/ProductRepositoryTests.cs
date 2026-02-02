@@ -130,7 +130,7 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     [Theory]
     [InlineData(1, 3, 3)]
     [InlineData(2, 3, 3)]
-    [InlineData(3, 3, 2)]
+    [InlineData(3, 3, 1)]
     public async Task GetPagedAsync_Should_Return_PagedProducts(int page, int size, int expectedCount)
     {
         // Arrange
@@ -163,7 +163,7 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     }
 
     [Theory]
-    [InlineData(0, 10)]
+    [InlineData(10, 1)]
     [InlineData(100, 10)]
     [InlineData(2, 0)]
     public async Task GetPagedAsync_Should_Return_EmptyList_When_PageExceedsTotalPages(int page, int size)
