@@ -6,8 +6,8 @@ namespace SharedKernel.Pagination;
 public enum SortOrder
 {
     [JsonStringEnumMemberName("asc")]
-    Ascending,
+    Asc,
 
     [JsonStringEnumMemberName("desc")]
-    Descending
+    Desc
 }
