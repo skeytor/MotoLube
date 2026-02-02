@@ -17,9 +17,10 @@ public class InboundRepositoryTests(DatabaseFixture fixture, ITestOutputHelper o
         // Arrange
         DateTimeOffset startDate = DateTimeOffset.UtcNow.AddDays(-10);
         DateTimeOffset endDate = DateTimeOffset.UtcNow;
+        PaginationOptions paginationOptions = new();
 
         // Act
-        IReadOnlyList<Inbound> result = await _repository.GetByDateRangeAsync(startDate, endDate, default);
+        IReadOnlyList<Inbound> result = await _repository.GetByDateRangeAsync(startDate, endDate, paginationOptions);
 
         // Assert
         Assert.NotNull(result);
@@ -35,9 +36,10 @@ public class InboundRepositoryTests(DatabaseFixture fixture, ITestOutputHelper o
         // Arrange
         DateTimeOffset startDate = DateTimeOffset.UtcNow.AddYears(-5);
         DateTimeOffset endDate = DateTimeOffset.UtcNow.AddYears(-4);
-        
+        PaginationOptions paginationOptions = new();
+
         // Act
-        IReadOnlyList<Inbound> result = await _repository.GetByDateRangeAsync(startDate, endDate, default);
+        IReadOnlyList<Inbound> result = await _repository.GetByDateRangeAsync(startDate, endDate, paginationOptions);
 
         // Assert
         Assert.NotNull(result);
