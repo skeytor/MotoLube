@@ -6,14 +6,20 @@ using System.Linq.Expressions;
 
 namespace MotoLube.Persistence.Repositories;
 
-internal sealed class InboundRepository(AppDbContext context) 
-    : Repository<Guid, Inbound>(context), IInboundRepository
+internal sealed class InboundRepository(AppDbContext context)
+    : Repository<Inbound, Guid>(context), IInboundRepository
 {
-    public Task<IReadOnlyList<Inbound>> GetByDateRangeAsync(
+    public async Task<IReadOnlyList<Inbound>> GetByDateRangeAsync(
         DateTimeOffset startDate,
         DateTimeOffset endDate,
+        PaginationOptions paginationOptions,
         CancellationToken cancellationToken = default) =>
-            GetByDateRangeAsync(startDate, endDate, new PaginationOptions(), i => i, cancellationToken);
+            await GetByDateRangeAsync(
+                startDate,
+                endDate,
+                paginationOptions,
+                i => i,
+                cancellationToken);
 
     public async Task<IReadOnlyList<TResult>> GetByDateRangeAsync<TResult>(
         DateTimeOffset startDate,
@@ -23,6 +29,7 @@ internal sealed class InboundRepository(AppDbContext context)
         CancellationToken cancellationToken = default) =>
             await Context.Inbounds
                 .AsNoTracking()
+                .Include(i => i.Items)
                 .Where(i => i.InboundDate >= startDate &&
                             i.InboundDate <= endDate)
                 .OrderBy(i => i.InboundDate)

@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace MotoLube.Persistence.Repositories;
 
 internal sealed class ProductRepository(AppDbContext context)
-    : Repository<Guid, Product>(context), IProductRepository
+    : Repository<Product, Guid>(context), IProductRepository
 {
     private static readonly Dictionary<string, Expression<Func<Product, object>>> _sortableColumns =
         new(StringComparer.OrdinalIgnoreCase)
@@ -18,12 +18,10 @@ internal sealed class ProductRepository(AppDbContext context)
         };
 
     public Task<Product?> FindBySkuAsync(string sku) =>
-        Context.Products
-                .FirstOrDefaultAsync(p => p.Sku == sku);
+        Context.Products.FirstOrDefaultAsync(p => p.Sku == sku);
 
     public async Task<bool> IsSkuUniqueAsync(string sku) =>
-        !await Context.Products
-                      .AnyAsync(p => p.Sku == sku);
+        !await Context.Products.AnyAsync(p => p.Sku == sku);
 
     public override async Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
         PaginationOptions pagingOptions,
@@ -43,7 +41,7 @@ internal sealed class ProductRepository(AppDbContext context)
             filters.SortColumn ?? string.Empty,
             defaultValue: p => p.Name);
 
-        query = filters.SortOrder is SortOrder.Descending
+        query = filters.SortOrder is SortOrder.Desc
             ? query.OrderByDescending(keySelector)
             : query.OrderBy(keySelector);
 
