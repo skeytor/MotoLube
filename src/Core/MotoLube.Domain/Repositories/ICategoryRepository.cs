@@ -2,4 +2,4 @@
 
 namespace MotoLube.Domain.Repositories;
 
-public interface ICategoryRepository : IRepository<int, Category>;
+public interface ICategoryRepository : IRepository<Category, int>;

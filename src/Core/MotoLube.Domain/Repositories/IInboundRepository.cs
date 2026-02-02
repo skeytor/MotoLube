@@ -10,7 +10,7 @@ namespace MotoLube.Domain.Repositories;
 /// <remarks>This interface extends the generic repository pattern for inbound entities, providing asynchronous
 /// methods.
 /// </remarks>
-public interface IInboundRepository : IRepository<Guid, Inbound>
+public interface IInboundRepository : IRepository<Inbound, Guid>
 {
     /// <summary>
     /// Asynchronously retrieves a read-only list of inbound records that fall within the specified date range.
@@ -23,6 +23,7 @@ public interface IInboundRepository : IRepository<Guid, Inbound>
     Task<IReadOnlyList<Inbound>> GetByDateRangeAsync(
         DateTimeOffset startDate,
         DateTimeOffset endDate,
+        PaginationOptions paginationOptions,
         CancellationToken cancellationToken = default);
 
     /// <summary>
