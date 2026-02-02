@@ -22,6 +22,7 @@ internal static class Seeder
         context.Suppliers.AddRange(SampleData.Suppliers);
         context.Products.AddRange(SampleData.Products);
         context.Inbounds.AddRange(SampleData.Inbounds);
+        context.Customers.AddRange(SampleData.Customers);
         await context.SaveChangesAsync();
     }
 }

@@ -151,7 +151,7 @@ internal static class SampleData
                     Quantity = 200,
                     UnitPrice = 12.00m
                 },
-                new() 
+                new()
                 {
                     ProductId = Products[3].Id,
                     Quantity = 120,
@@ -159,7 +159,7 @@ internal static class SampleData
                 }
             ],
         },
-        new Inbound 
+        new Inbound
         {
             Id = Guid.Parse("77777777-7777-7777-7777-777777777777"),
             InboundDate = DateTimeOffset.UtcNow.AddDays(-40),
@@ -181,5 +181,14 @@ internal static class SampleData
                 }
             ]
         }
+    ];
+
+    internal static readonly Customer[] Customers =
+    [
+        new() { Id = Guid.Parse("44444444-4444-4444-4444-444444444444"), FirstName = "John", LastName = "Doe", PhoneNumber = "+59174663212" },
+        new() { Id = Guid.Parse("55555555-5555-5555-5555-555555555555"), FirstName = "Jane", LastName = "Smith", PhoneNumber = "+59174663213" },
+        new() { Id = Guid.Parse("66666666-6666-6666-6666-666666666666"), FirstName = "Mike", LastName = "Johnson", PhoneNumber = "+59174663214" },
+        new() { Id = Guid.Parse("77777777-7777-7777-7777-777777777777"), FirstName = "Emily", LastName = "Davis", PhoneNumber = "+59174663215" },
+        new() { Id = Guid.Parse("88888888-8888-8888-8888-888888888888"), FirstName = "David", LastName = "Wilson", PhoneNumber = "+59174663216" },
     ];
 }
