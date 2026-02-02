@@ -51,7 +51,7 @@ public sealed class DatabaseFixture : IAsyncLifetime
     {
         var contextOptions = new DbContextOptionsBuilder<AppDbContext>()
             .UseNpgsql($"{ConnectionString};Include Error Detail=true")
-            .UseAsyncSeeding((context, _, _) => DataInitializer.SeedDatabaseAsync(context))
+            .UseAsyncSeeding((context, _, _) => Seeder.SeedDatabaseAsync(context))
             .LogTo(
                 message => Debug.WriteLine(message),
                 [DbLoggerCategory.Database.Command.Name],
