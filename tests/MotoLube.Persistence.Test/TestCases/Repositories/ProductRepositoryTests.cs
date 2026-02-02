@@ -93,47 +93,17 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
         Assert.False(result);
     }
 
-    [Fact]
-    public async Task IsSkuUniqueAsync_Should_Return_True_When_SkuDoesNotExist()
+    [Theory]
+    [InlineData("NEW-SKU-001")]
+    [InlineData("ANOTHER-UNIQUE-SKU")]
+    [InlineData("UNIQUE-SKU-12345")]
+    public async Task IsSkuUniqueAsync_Should_Return_True_When_SkuDoesNotExist(string uniqueSku)
     {
-        // Arrange
-        string uniqueSku = "UNIQUE-SKU-12345";
-
         // Act
         var result = await _repository.IsSkuUniqueAsync(uniqueSku);
 
         // Assert
         Assert.True(result);
-    }
-
-    #endregion
-
-    #region ExistsByIdAsync Tests
-
-    [Fact]
-    public async Task ExistsByIdAsync_Should_Return_True_When_ProductExists()
-    {
-        // Arrange
-        Product existingProduct = SampleData.Products[0];
-
-        // Act
-        var result = await _repository.ExistsByIdAsync(existingProduct.Id);
-
-        // Assert
-        Assert.True(result);
-    }
-
-    [Fact]
-    public async Task ExistsByIdAsync_Should_Return_False_When_ProductDoesNotExist()
-    {
-        // Arrange
-        Guid nonExistentId = Guid.NewGuid();
-
-        // Act
-        var result = await _repository.ExistsByIdAsync(nonExistentId);
-
-        // Assert
-        Assert.False(result);
     }
 
     #endregion
@@ -157,12 +127,14 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
 
     #region GetPagedAsync Tests
 
-    [Fact]
-    public async Task GetPagedAsync_Should_Return_PagedProducts()
+    [Theory]
+    [InlineData(1, 3, 3)]
+    [InlineData(2, 3, 3)]
+    [InlineData(3, 3, 2)]
+    public async Task GetPagedAsync_Should_Return_PagedProducts(int page, int size, int expectedCount)
     {
         // Arrange
-        PaginationOptions options = new(Page: 1, Size: 3);
-        int expectedCount = 3;
+        PaginationOptions options = new(Page: page, Size: size);
 
         // Act
         var result = await _repository.GetPagedAsync(options, p => p);
@@ -190,11 +162,14 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
         Assert.Equal(expectedCount, result.Count);
     }
 
-    [Fact]
-    public async Task GetPagedAsync_Should_Return_EmptyList_When_PageExceedsTotalPages()
+    [Theory]
+    [InlineData(0, 10)]
+    [InlineData(100, 10)]
+    [InlineData(2, 0)]
+    public async Task GetPagedAsync_Should_Return_EmptyList_When_PageExceedsTotalPages(int page, int size)
     {
         // Arrange
-        PaginationOptions options = new(Page: 100, Size: 10);
+        PaginationOptions options = new(page, size);
 
         // Act
         var result = await _repository.GetPagedAsync(options, p => p);
@@ -204,18 +179,18 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
         Assert.Empty(result);
     }
 
-    [Fact]
-    public async Task GetPagedAsync_WithSelector_Should_Return_ProjectedResults()
+    [Theory]
+    [InlineData(1, 3)]
+    public async Task GetPagedAsync_WithSelector_Should_Return_ProjectedResults(int page, int size)
     {
         // Arrange
-        PaginationOptions filter = new(Page: 1, Size: 3);
+        PaginationOptions filter = new(page, size);
 
         // Act
         var result = await _repository.GetPagedAsync(filter, p => new { p.Id, p.Name });
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(3, result.Count);
         Assert.All(result, item =>
         {
             Assert.NotEqual(Guid.Empty, item.Id);

@@ -1,8 +1,7 @@
 ﻿namespace MotoLube.Domain.Entities;
 
-public class Supplier
+public class Supplier : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? PhoneNumber {  get; set; }
     public string? Address {  get; set; }

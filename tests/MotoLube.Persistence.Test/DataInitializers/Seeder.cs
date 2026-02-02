@@ -6,7 +6,7 @@
 /// <remarks>This class is intended for internal use during development or testing to populate the database with
 /// sample entities. All members are static and should be called as part of the application's setup or migration
 /// process. This class is not thread-safe.</remarks>
-internal static class DataInitializer
+internal static class Seeder
 {
     /// <summary>
     /// Asynchronously seeds the specified database context with sample data.
@@ -21,6 +21,7 @@ internal static class DataInitializer
         context.Brands.AddRange(SampleData.Brands);
         context.Suppliers.AddRange(SampleData.Suppliers);
         context.Products.AddRange(SampleData.Products);
+        context.Inbounds.AddRange(SampleData.Inbounds);
         await context.SaveChangesAsync();
     }
 }
