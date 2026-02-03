@@ -4,6 +4,7 @@
     <Project Path="src/SharedKernel/SharedKernel.csproj" Id="5e6a85f4-a8ea-41c2-a030-d28e7e434a7a" />
   </Folder>
   <Folder Name="/src/Core/">
+    <Project Path="src/Core/MotoLube.Application/MotoLube.Application.csproj" Id="bcc5043e-7779-4506-841f-5594b97ad663" />
     <Project Path="src/Core/MotoLube.Domain/MotoLube.Domain.csproj" />
     <Project Path="src/Core/MotoLube.Persistence/MotoLube.Persistence.csproj" Id="8e7ceb5b-33ef-4951-a359-345e5007bcb9" />
   </Folder>
