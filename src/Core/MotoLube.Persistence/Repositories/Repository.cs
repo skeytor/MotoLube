@@ -17,13 +17,13 @@ internal abstract class Repository<TEntity, TId>(AppDbContext context) : IReposi
 
     public virtual ValueTask<TEntity?> FindByIdAsync(TId id) => _dbSet.FindAsync([id]);
 
-    public virtual async Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
+    public virtual async Task<IReadOnlyCollection<TResult>> GetPagedAsync<TResult>(
         PaginationOptions pagingOptions,
         PaginationQueryFilters filters,
         Expression<Func<TEntity, TResult>> selector) => 
             await GetPagedAsync(pagingOptions, selector);
 
-    public virtual async Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
+    public virtual async Task<IReadOnlyCollection<TResult>> GetPagedAsync<TResult>(
         PaginationOptions pagingOptions,
         Expression<Func<TEntity, TResult>> selector) =>
             await _dbSet

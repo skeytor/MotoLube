@@ -44,7 +44,7 @@ public interface IRepository<TEntity, in TId>
     /// <param name="selector">An expression that defines how to project each entity to the result type.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a read-only list of projected
     /// results for the requested page. The list is empty if no entities match the filters.</returns>
-    Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
+    Task<IReadOnlyCollection<TResult>> GetPagedAsync<TResult>(
         PaginationOptions pagingOptions,
         PaginationQueryFilters filters,
         Expression<Func<TEntity, TResult>> selector);
@@ -58,7 +58,7 @@ public interface IRepository<TEntity, in TId>
     /// <param name="selector">An expression that defines how to project each entity to the result type. Cannot be null.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a read-only list of projected
     /// results for the specified page. The list will be empty if no entities match the paging criteria.</returns>
-    Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
+    Task<IReadOnlyCollection<TResult>> GetPagedAsync<TResult>(
         PaginationOptions pagingOptions,
         Expression<Func<TEntity, TResult>> selector);
 
