@@ -1,43 +1,44 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoLube.Domain.Entities;
 using MotoLube.Domain.Repositories;
-using SharedKernel.Pagination;
 using System.Linq.Expressions;
 
 namespace MotoLube.Persistence.Repositories;
 
-internal abstract class Repository<TEntity, TId>(AppDbContext context) : IRepository<TEntity, TId>
+internal class Repository<TEntity, TId>(AppDbContext context) : IRepository<TEntity, TId>
     where TEntity : BaseEntity<TId>
     where TId : IEquatable<TId>
 {
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
-    protected AppDbContext Context { get; } = context;
+    protected AppDbContext Context => context;
 
     public virtual Task<int> CountAsync() => _dbSet.CountAsync();
 
+    public void Delete(TEntity entity) => _dbSet.Remove(entity);
+
     public virtual ValueTask<TEntity?> FindByIdAsync(TId id) => _dbSet.FindAsync([id]);
 
-    public virtual async Task<IReadOnlyCollection<TResult>> GetPagedAsync<TResult>(
-        PaginationOptions pagingOptions,
-        PaginationQueryFilters filters,
-        Expression<Func<TEntity, TResult>> selector) => 
-            await GetPagedAsync(pagingOptions, selector);
+    public async Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(
+        int page,
+        int size,
+        CancellationToken cancellationToken = default) => 
+        await GetPagedListAsync(page, size, e => e, cancellationToken);
 
-    public virtual async Task<IReadOnlyCollection<TResult>> GetPagedAsync<TResult>(
-        PaginationOptions pagingOptions,
-        Expression<Func<TEntity, TResult>> selector) =>
-            await _dbSet
-                .AsNoTracking()
-                .Select(selector)
-                .Skip((pagingOptions.Page - 1) * pagingOptions.Size)
-                .Take(pagingOptions.Size)
-                .ToListAsync();
+    public async Task<IReadOnlyCollection<TResult>> GetPagedListAsync<TResult>(
+        int page,
+        int size,
+        Expression<Func<TEntity, TResult>> selector,
+        CancellationToken cancellationToken = default) => 
+        await _dbSet
+            .AsNoTracking()
+            .Select(selector)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync(cancellationToken);
 
     public virtual async Task<TEntity> InsertAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
         return entity;
     }
-
-    public void Update(TEntity entity) => _dbSet.Update(entity);
 }

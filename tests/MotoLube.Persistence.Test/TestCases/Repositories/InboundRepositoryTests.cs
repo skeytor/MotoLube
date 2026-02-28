@@ -17,7 +17,7 @@ public class InboundRepositoryTests(DatabaseFixture fixture, ITestOutputHelper o
         // Arrange
         DateTimeOffset startDate = DateTimeOffset.UtcNow.AddDays(-10);
         DateTimeOffset endDate = DateTimeOffset.UtcNow;
-        PaginationOptions paginationOptions = new();
+        PagingParameters paginationOptions = new();
 
         // Act
         IReadOnlyList<Inbound> result = await _repository.GetByDateRangeAsync(startDate, endDate, paginationOptions);
@@ -36,7 +36,7 @@ public class InboundRepositoryTests(DatabaseFixture fixture, ITestOutputHelper o
         // Arrange
         DateTimeOffset startDate = DateTimeOffset.UtcNow.AddYears(-5);
         DateTimeOffset endDate = DateTimeOffset.UtcNow.AddYears(-4);
-        PaginationOptions paginationOptions = new();
+        PagingParameters paginationOptions = new();
 
         // Act
         IReadOnlyList<Inbound> result = await _repository.GetByDateRangeAsync(startDate, endDate, paginationOptions);
@@ -52,7 +52,7 @@ public class InboundRepositoryTests(DatabaseFixture fixture, ITestOutputHelper o
         // Arrange
         DateTimeOffset startDate = DateTimeOffset.UtcNow.AddDays(-50);
         DateTimeOffset endDate = DateTimeOffset.UtcNow;
-        PaginationOptions paginationOptions = new(Page: 1, Size: 2);
+        PagingParameters paginationOptions = new(Page: 1, Size: 2);
         // Act
         var result = await _repository.GetByDateRangeAsync(
             startDate,

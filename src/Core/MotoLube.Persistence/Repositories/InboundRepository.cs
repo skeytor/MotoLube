@@ -12,7 +12,7 @@ internal sealed class InboundRepository(AppDbContext context)
     public async Task<IReadOnlyList<Inbound>> GetByDateRangeAsync(
         DateTimeOffset startDate,
         DateTimeOffset endDate,
-        PaginationOptions paginationOptions,
+        PagingParameters paginationOptions,
         CancellationToken cancellationToken = default) =>
             await GetByDateRangeAsync(
                 startDate,
@@ -24,7 +24,7 @@ internal sealed class InboundRepository(AppDbContext context)
     public async Task<IReadOnlyList<TResult>> GetByDateRangeAsync<TResult>(
         DateTimeOffset startDate,
         DateTimeOffset endDate,
-        PaginationOptions paginationOptions,
+        PagingParameters paginationOptions,
         Expression<Func<Inbound, TResult>> selector,
         CancellationToken cancellationToken = default) =>
             await Context.Inbounds

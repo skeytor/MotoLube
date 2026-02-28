@@ -9,6 +9,7 @@
     <Project Path="src/Core/MotoLube.Persistence/MotoLube.Persistence.csproj" Id="8e7ceb5b-33ef-4951-a359-345e5007bcb9" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/MotoLube.Application.Tests/MotoLube.Application.Tests.csproj" Id="03cd71b5-7a4f-4250-9f24-e4f27530b063" />
     <Project Path="tests/MotoLube.Persistence.Test/MotoLube.Persistence.Test.csproj" Id="a8530516-3b1a-43a5-ae68-864a287260ed" />
   </Folder>
 </Solution>

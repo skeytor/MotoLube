@@ -30,4 +30,17 @@ internal static class ProductMapperExtensions
                 BrandId = source.BrandId,
             };
     }
+
+    extension(UpdateProductRequest source)
+    {
+        public void ApplyTo(Product target)
+        {
+            target.Name = source.Name;
+            target.Description = source.Description;
+            target.Price = source.Price;
+            target.Sku = source.Sku;
+            target.CategoryId = source.CategoryId;
+            target.BrandId = source.BrandId;
+        }
+    }
 }

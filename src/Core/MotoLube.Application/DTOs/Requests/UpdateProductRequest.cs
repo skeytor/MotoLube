@@ -1,10 +1,9 @@
 ﻿namespace MotoLube.Application.DTOs.Requests;
 
-public sealed record ProductResponse(
-    Guid Id,
+public sealed record UpdateProductRequest(
     string Name,
     string Description,
     decimal Price,
     string Sku,
-    int StockQuantity
-);
+    int CategoryId,
+    int BrandId);

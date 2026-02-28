@@ -133,11 +133,9 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     [InlineData(3, 3, 1)]
     public async Task GetPagedAsync_Should_Return_PagedProducts(int page, int size, int expectedCount)
     {
-        // Arrange
-        PaginationOptions options = new(Page: page, Size: size);
 
         // Act
-        var result = await _repository.GetPagedAsync(options, p => p);
+        var result = await _repository.GetPagedListAsync(page, size);
 
         // Assert
         Assert.NotNull(result);
@@ -152,10 +150,9 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
         int pageSize = 3;
         int lastPage = (int)Math.Ceiling(totalProducts / (double)pageSize);
         int expectedCount = totalProducts - (pageSize * (lastPage - 1));
-        PaginationOptions options = new(lastPage, pageSize);
 
         // Act
-        var result = await _repository.GetPagedAsync(options, p => p);
+        var result = await _repository.GetPagedListAsync(lastPage, pageSize);
 
         // Assert
         Assert.NotNull(result);
@@ -168,11 +165,9 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     [InlineData(2, 0)]
     public async Task GetPagedAsync_Should_Return_EmptyList_When_PageExceedsTotalPages(int page, int size)
     {
-        // Arrange
-        PaginationOptions options = new(page, size);
 
         // Act
-        var result = await _repository.GetPagedAsync(options, p => p);
+        var result = await _repository.GetPagedListAsync(page, size);
 
         // Assert
         Assert.NotNull(result);
@@ -183,11 +178,9 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
     [InlineData(1, 3)]
     public async Task GetPagedAsync_WithSelector_Should_Return_ProjectedResults(int page, int size)
     {
-        // Arrange
-        PaginationOptions filter = new(page, size);
 
         // Act
-        var result = await _repository.GetPagedAsync(filter, p => new { p.Id, p.Name });
+        var result = await _repository.GetPagedListAsync(page, size, selector: p => new { p.Id, p.Name });
 
         // Assert
         Assert.NotNull(result);
@@ -253,8 +246,6 @@ public class ProductRepositoryTests(DatabaseFixture database, ITestOutputHelper 
             existingProduct.Name = updatedName;
             existingProduct.Price = updatedPrice;
 
-            // Act
-            _repository.Update(existingProduct);
             await Context.SaveChangesAsync();
 
             // Assert

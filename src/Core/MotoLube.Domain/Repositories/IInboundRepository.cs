@@ -23,7 +23,7 @@ public interface IInboundRepository : IRepository<Inbound, Guid>
     Task<IReadOnlyList<Inbound>> GetByDateRangeAsync(
         DateTimeOffset startDate,
         DateTimeOffset endDate,
-        PaginationOptions paginationOptions,
+        PagingParameters paginationOptions,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -43,7 +43,7 @@ public interface IInboundRepository : IRepository<Inbound, Guid>
     Task<IReadOnlyList<TResult>> GetByDateRangeAsync<TResult>(
         DateTimeOffset startDate,
         DateTimeOffset endDate,
-        PaginationOptions paginationOptions,
+        PagingParameters paginationOptions,
         Expression<Func<Inbound, TResult>> selector,
         CancellationToken cancellationToken = default);
 }
