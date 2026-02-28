@@ -6,8 +6,7 @@ using System.Linq.Expressions;
 
 namespace MotoLube.Persistence.Repositories;
 
-internal sealed class ProductRepository(AppDbContext context)
-    : Repository<Product, Guid>(context), IProductRepository
+internal sealed class ProductRepository(AppDbContext context) : Repository<Product, Guid>(context), IProductRepository
 {
     private static readonly Dictionary<string, Expression<Func<Product, object>>> _sortableColumns =
         new(StringComparer.OrdinalIgnoreCase)
@@ -23,32 +22,37 @@ internal sealed class ProductRepository(AppDbContext context)
     public async Task<bool> IsSkuUniqueAsync(string sku) =>
         !await Context.Products.AnyAsync(p => p.Sku == sku);
 
-    public override async Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
-        PaginationOptions pagingOptions,
-        PaginationQueryFilters filters,
-        Expression<Func<Product, TResult>> selector)
+    public async Task<bool> IsSkuUniqueAsync(string sku, Guid excludeId) => 
+        !await Context.Products.AnyAsync(p => p.Sku == sku && p.Id != excludeId);
+
+    public async Task<IReadOnlyCollection<TResult>> GetPagedListAsync<TResult>(
+        int page,
+        int size,
+        PagingFilters pagingFilters,
+        Expression<Func<Product, TResult>> selector,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<Product> query = Context.Products.AsNoTracking();
 
-        if (!string.IsNullOrWhiteSpace(filters.SearchTerm))
+        if (!string.IsNullOrWhiteSpace(pagingFilters.SearchTerm))
         {
             query = query.Where(p =>
-                p.Name.Contains(filters.SearchTerm) ||
-                p.Sku.Contains(filters.SearchTerm));
+                p.Name.Contains(pagingFilters.SearchTerm) ||
+                p.Sku.Contains(pagingFilters.SearchTerm));
         }
 
         Expression<Func<Product, object>> keySelector = _sortableColumns.GetValueOrDefault(
-            filters.SortColumn ?? string.Empty,
+            pagingFilters.SortColumn!,
             defaultValue: p => p.Name);
 
-        query = filters.SortOrder is SortOrder.Desc
+        query = pagingFilters.SortOrder is SortOrder.Desc
             ? query.OrderByDescending(keySelector)
             : query.OrderBy(keySelector);
 
         return await query
             .Select(selector)
-            .Skip((pagingOptions.Page - 1) * pagingOptions.Size)
-            .Take(pagingOptions.Size)
-            .ToListAsync();
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync(cancellationToken);
     }
 }

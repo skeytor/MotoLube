@@ -1,5 +1,4 @@
 ﻿using MotoLube.Domain.Entities;
-using SharedKernel.Pagination;
 using System.Linq.Expressions;
 
 namespace MotoLube.Domain.Repositories;
@@ -36,31 +35,37 @@ public interface IRepository<TEntity, in TId>
     ValueTask<TEntity?> FindByIdAsync(TId id);
 
     /// <summary>
-    /// Asynchronously retrieves a paged list of entities projected to the specified result type.
+    /// Retrieves a read-only collection containing a single page of results, projected to the specified result type.
     /// </summary>
-    /// <typeparam name="TResult">The type to which each entity is projected in the result set.</typeparam>
-    /// <param name="pagingOptions">The pagination options that specify the page size, page number, and sorting criteria for the query.</param>
-    /// <param name="filters">The filters to apply when querying entities. Only entities matching these filters are included in the result.</param>
+    /// <remarks>Throws an exception if the page index is negative or if the page size is less than one. The
+    /// total number of available pages is not returned by this method.</remarks>
+    /// <typeparam name="TResult">The type to which each entity is projected in the result collection.</typeparam>
+    /// <param name="page">The zero-based index of the page to retrieve. Must be greater than or equal to 0.</param>
+    /// <param name="size">The number of items to include in each page. Must be greater than 0.</param>
     /// <param name="selector">An expression that defines how to project each entity to the result type.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains a read-only list of projected
-    /// results for the requested page. The list is empty if no entities match the filters.</returns>
-    Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
-        PaginationOptions pagingOptions,
-        PaginationQueryFilters filters,
-        Expression<Func<TEntity, TResult>> selector);
-    
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+    /// <returns>A read-only collection of results of type TResult for the specified page.</returns>
+    Task<IReadOnlyCollection<TResult>> GetPagedListAsync<TResult>(
+        int page,
+        int size,
+        Expression<Func<TEntity, TResult>> selector,
+        CancellationToken cancellationToken = default);
+
     /// <summary>
-    /// Asynchronously retrieves a paged subset of entities projected to a specified result type.
+    /// Retrieves a read-only collection containing a page of entities from the data source asynchronously.
     /// </summary>
-    /// <typeparam name="TResult">The type to which each entity is projected in the result set.</typeparam>
-    /// <param name="pagingOptions">The pagination options that specify the page size, page number, and related settings for the query. Cannot be
-    /// null.</param>
-    /// <param name="selector">An expression that defines how to project each entity to the result type. Cannot be null.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains a read-only list of projected
-    /// results for the specified page. The list will be empty if no entities match the paging criteria.</returns>
-    Task<IReadOnlyList<TResult>> GetPagedAsync<TResult>(
-        PaginationOptions pagingOptions,
-        Expression<Func<TEntity, TResult>> selector);
+    /// <remarks>Use this method to retrieve entities in a paginated manner, which is useful for large data
+    /// sets. The method can be canceled by providing a cancellation token. Ensure that the page and size parameters are
+    /// within valid ranges to avoid unexpected results.</remarks>
+    /// <param name="page">The zero-based index of the page to retrieve. Must be greater than or equal to 0.</param>
+    /// <param name="size">The number of entities to include in the page. Must be greater than 0.</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a read-only collection of entities
+    /// for the specified page. The collection is empty if no entities are found for the given page.</returns>
+    Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(
+        int page, 
+        int size, 
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously returns the total number of items in the collection.
@@ -70,8 +75,8 @@ public interface IRepository<TEntity, in TId>
     Task<int> CountAsync();
     
     /// <summary>
-    /// Updates the specified entity in the data store.
+    /// Deletes the specified entity from the data store.
     /// </summary>
-    /// <param name="entity">The entity to update. Cannot be null.</param>
-    void Update(TEntity entity);
+    /// <param name="entity">The entity to delete. Cannot be null.</param>
+    void Delete(TEntity entity);
 }
